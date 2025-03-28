@@ -91,7 +91,14 @@ server {
 #    location / {
 #        proxy_pass http://api:3080;
 #    }
-#
+#}
+
+server {
+    listen 80;
+    server_name ai.it-opt.jp;
+
+    return 301 https://$host$request_uri;
+}
 
 server {
     listen 443 ssl;
@@ -107,11 +114,8 @@ server {
         proxy_set_header Connection "upgrade";
         proxy_set_header Host $host;
     }
+
+    # Increase the client_max_body_size to allow larger file uploads
+    client_max_body_size 25M;
 }
 
-server {
-    listen 80;
-    server_name ai.it-opt.jp;
-    return 301 https://$host$request_uri;
-}
-}
